@@ -1,4 +1,4 @@
-package com.grokonez.jwtauthentication.model;
+package com.avengers.model;
 
 public enum  RoleName {
     ROLE_USER,

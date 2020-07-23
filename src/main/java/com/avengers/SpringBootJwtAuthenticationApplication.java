@@ -1,4 +1,4 @@
-package com.grokonez.jwtauthentication;
+package com.avengers;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

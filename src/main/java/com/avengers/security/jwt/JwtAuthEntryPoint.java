@@ -1,4 +1,4 @@
-package com.grokonez.jwtauthentication.security.jwt;
+package com.avengers.security.jwt;
 
 import java.io.IOException;
 
