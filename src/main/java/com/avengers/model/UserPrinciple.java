@@ -1,6 +1,5 @@
-package com.grokonez.jwtauthentication.security.services;
+package com.avengers.model;
 
-import com.grokonez.jwtauthentication.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

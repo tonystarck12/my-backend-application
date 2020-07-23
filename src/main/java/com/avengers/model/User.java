@@ -1,4 +1,4 @@
-package com.grokonez.jwtauthentication.model;
+package com.avengers.model;
 
 import java.util.HashSet;
 import java.util.Set;

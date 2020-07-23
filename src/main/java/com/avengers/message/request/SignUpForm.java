@@ -1,4 +1,4 @@
-package com.grokonez.jwtauthentication.message.request;
+package com.avengers.message.request;
 
 import java.util.Set;
 

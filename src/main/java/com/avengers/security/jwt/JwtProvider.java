@@ -1,4 +1,4 @@
-package com.grokonez.jwtauthentication.security.jwt;
+package com.avengers.security.jwt;
 
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import com.grokonez.jwtauthentication.security.services.UserPrinciple;
+import com.avengers.model.UserPrinciple;
 
 import java.util.Date;
 
