@@ -1,6 +1,7 @@
 package com.grokonez.jwtauthentication.controller;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grokonez.jwtauthentication.message.request.LoginForm;
@@ -30,6 +32,7 @@ import com.grokonez.jwtauthentication.model.User;
 import com.grokonez.jwtauthentication.repository.RoleRepository;
 import com.grokonez.jwtauthentication.repository.UserRepository;
 import com.grokonez.jwtauthentication.security.jwt.JwtProvider;
+import com.grokonez.jwtauthentication.security.services.UserDetailsServiceImpl;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -50,7 +53,15 @@ public class AuthRestAPIs {
  
   @Autowired
   JwtProvider jwtProvider;
- 
+  
+  @Autowired
+  UserDetailsServiceImpl userDetailsService;
+  
+  @RequestMapping(value = "/users", method = RequestMethod.GET, produces = "application/json")
+	public List<User> getAllUsers() {
+	  return this.userDetailsService.getAllUsers();
+  }
+
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
  
