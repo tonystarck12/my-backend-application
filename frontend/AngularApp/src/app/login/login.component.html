@@ -1,31 +1,60 @@
-<div class="row col-sm-6" style="max-width:350px;">
-    <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" class="form-control" name="username" [(ngModel)]="form.username" #username="ngModel"
-          required />
-        <div *ngIf="f.submitted && username.invalid">
-          <div *ngIf="username.errors.required">Username is required</div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" class="form-control" name="password" [(ngModel)]="form.password" #password="ngModel"
-          required minlength="6" />
-        <div *ngIf="f.submitted && password.invalid">
-          <div *ngIf="password.errors.required">Password is required</div>
-          <div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
-        </div>
-      </div>
-      <div class="form-group">
-        <button class="btn btn-primary">Login</button>
-        <div *ngIf="f.submitted && isLoginFailed" class="alert alert-danger">
-          Login failed: {{errorMessage}}
-        </div>
-      </div>
-    </form>
-    
-    <hr />
-    <p>Don't have an account?</p>
-    <a href="signup" class="btn btn-success">Sign Up</a>
+
+<div class="container-fluid">
+  <div class="row no-gutter">
+      <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
+      <div class="col-md-8 col-lg-6"></div>
   </div>
+</div>
+<div class="container-fluid">
+  <div class="row no-gutter">
+      <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
+      <div class="col-md-8 col-lg-6">
+          <div class="login d-flex align-items-center py-5">
+              <div class="container">
+                  <div class="row">
+                      <div class="col-md-9 col-lg-8 mx-auto">
+                          <h3 class="login-heading mb-4">Sign In!</h3>
+                          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                              <div class="form-group">
+                                <label id="iie1v">Login Id</label>
+                                <!-- Input -->
+                                <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+                                <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                                    <div *ngIf="f.username.errors.required">login Id is required</div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                  <div class="row">
+                                      <div class="col"><label>Password</label></div>
+                                      <div class="col-auto"><a href="#" class="form-text small text-muted"> Forgot password? </a></div>
+                                  </div>
+                                  <div class="input-group input-group-merge">
+                                    <input type="password" formControlName="password" class="form-control form-control-appended" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                                      <div class="input-group-append">
+                                        <span class="input-group-text">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                                  <path
+                                                      d="M12.015 7c4.751 0 8.063 3.012 9.504 4.636-1.401 1.837-4.713 5.364-9.504 5.364-4.42 0-7.93-3.536-9.478-5.407 1.493-1.647 4.817-4.593 9.478-4.593zm0-2c-7.569 0-12.015 6.551-12.015 6.551s4.835 7.449 12.015 7.449c7.733 0 11.985-7.449 11.985-7.449s-4.291-6.551-11.985-6.551zm-.015 3c-2.21 0-4 1.791-4 4s1.79 4 4 4c2.209 0 4-1.791 4-4s-1.791-4-4-4zm-.004 3.999c-.564.564-1.479.564-2.044 0s-.565-1.48 0-2.044c.564-.564 1.479-.564 2.044 0s.565 1.479 0 2.044z">
+                                                  </path>
+                                              </svg>
+                                            </span>
+                                      </div>
+                                      <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                                        <div *ngIf="f.password.errors.required">Password is required</div>
+                                        <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+                                    </div>
+                                  </div>
+                              </div>
+                              <button class="btn btn-lg btn-block btn-primary mb-3"> Sign in </button>
+                              <p class="text-center"><small class="text-muted text-center"> Don't have an account yet? <a href="signup">Sign up</a>. </small></p>
+                              <div *ngIf="submitted && isLoginFailed" class="alert alert-danger">
+                               Login Authentication Failed
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

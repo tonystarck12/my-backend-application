@@ -12,9 +12,22 @@ export class HomeComponent implements OnInit {
   info: any;
   roles: string[];
   authority: string;
+  showLogoutModal: boolean = false;
   constructor(private tokenStorage: TokenStorageService,private router: Router) { }
 
   ngOnInit() {
+    window.addEventListener('storage', (event) => {
+      const credentials = JSON.parse(window.sessionStorage.getItem('CREDENTIALS_TOKEN'))
+      if(event.key === 'REQUESTING_SHARED_CREDENTIALS' && credentials) {
+        window.localStorage.setItem('CREDENTIALS_SHARING', JSON.stringify({ token: 'any-token-you-want' }))
+        window.localStorage.removeItem('CREDENTIALS_SHARING')
+      }
+      if(event.key === 'CREDENTIALS_SHARING' && !credentials){
+        window.sessionStorage.setItem('CREDENTIALS_TOKEN', event.newValue)
+      }
+    })
+    window.localStorage.setItem('REQUESTING_SHARED_CREDENTIALS', Date.now().toString())
+    window.localStorage.removeItem('REQUESTING_SHARED_CREDENTIALS')
     if(this.tokenStorage.getToken() == null){
       this.router.navigate(["auth/login"]);
     }
@@ -43,5 +56,9 @@ export class HomeComponent implements OnInit {
   logout(){
     this.tokenStorage.signOut();
     this.router.navigate(["auth/login"]);
+  }
+
+  displayLogoutConfirmation() {
+   this.showLogoutModal = true;
   }
 }
