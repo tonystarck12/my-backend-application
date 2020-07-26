@@ -1,0 +1,27 @@
+<nav class="navbar navbar-inverse" *ngIf="authority">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Dashboard</a>
+    </div>
+    <ul class="nav navbar-nav" routerLinkActive="active">
+      <li *ngIf="authority === 'user' || authority === 'admin'" class="nav-item">
+        <a class="nav-link" routerLink="user">User Board</a>
+      </li>
+      <li *ngIf="authority === 'admin'" class="nav-item">
+        <a class="nav-link" routerLink="admin">Admin Board</a>
+      </li>
+      <li *ngIf="authority === 'pm' || authority === 'admin'" class="nav-item">
+        <a class="nav-link" routerLink="pm">PM Board</a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li *ngIf="authority" class="nav-item">
+         <a class="nav-link"  href="" (click)="logout()">Logout</a>
+       
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
