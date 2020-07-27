@@ -18,6 +18,9 @@ import { AdminComponent } from './admin/admin.component';
 import { PmComponent } from './pm/pm.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChartComponentComponent } from './chart-component/chart-component.component';
+import { AdduserComponent } from './admin/adduser/adduser.component';
+import { ChangepasswordComponent } from './admin/changepassword/changepassword.component';
+import { UserlistComponent } from './admin/userlist/userlist.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,10 @@ import { ChartComponentComponent } from './chart-component/chart-component.compo
     AdminComponent,
     PmComponent,
     DashboardComponent,
-    ChartComponentComponent
+    ChartComponentComponent,
+    AdduserComponent,
+    ChangepasswordComponent,
+    UserlistComponent
   ],
   imports: [
     BrowserModule,
