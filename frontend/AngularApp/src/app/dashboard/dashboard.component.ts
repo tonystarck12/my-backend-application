@@ -13,7 +13,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.tokenStorage.getToken() == null){
-      this.router.navigate(["auth/login"]);
+      this.router.navigate(["login"]);
     }
   }
 
