@@ -16,7 +16,7 @@ export class PmComponent implements OnInit {
 
   ngOnInit() {
     if(this.tokenStorage.getToken() == null){
-      this.router.navigate(["auth/login"]);
+      this.router.navigate(["login"]);
     }
     this.userService.getPMBoard().subscribe(
       data => {

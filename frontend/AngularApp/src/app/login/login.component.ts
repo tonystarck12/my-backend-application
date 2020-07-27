@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
 import { TokenStorageService } from '../auth/token-storage.service';
 import { AuthLoginInfo } from '../auth/login-info';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-login',
@@ -11,28 +12,46 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  form: any = {};
+  loginForm: FormGroup;
+  submitted = false;
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
   roles: string[] = [];
   private loginInfo: AuthLoginInfo;
 
-  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, private router: Router) { }
+  constructor(private spinnerService: NgxSpinnerService,private formBuilder: FormBuilder,private authService: AuthService, private tokenStorage: TokenStorageService, private router: Router) { }
+
+  
 
   ngOnInit() {
+    this.loginForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]]
+  });
+  
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
       this.roles = this.tokenStorage.getAuthorities();
     }
   }
 
+  // convenience getter for easy access to form fields
+  get f() { return this.loginForm.controls; }
+
   onSubmit() {
-    console.log("On Submit Form>>",this.form);
+    this.spinnerService.show();
+    this.submitted = true;
+    console.log("On Submit Form>>",this.loginForm);
+    // stop here if form is invalid
+    if (this.loginForm.invalid) {
+      this.spinnerService.hide();
+      return;
+    }
 
     this.loginInfo = new AuthLoginInfo(
-      this.form.username,
-      this.form.password);
+      this.loginForm.get('username').value,
+      this.loginForm.get('password').value);
 
     this.authService.attemptAuth(this.loginInfo).subscribe(
       data => {
@@ -44,12 +63,14 @@ export class LoginComponent implements OnInit {
         this.isLoggedIn = true;
         this.roles = this.tokenStorage.getAuthorities();
         //this.reloadPage();
+        this.spinnerService.hide();
         this.router.navigate(["home"]);
       },
       error => {
         console.log(error);
         this.errorMessage = error.error.message;
         this.isLoginFailed = true;
+        this.spinnerService.hide();
       }
     );
   }
