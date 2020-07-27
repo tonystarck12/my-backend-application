@@ -10,7 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -26,6 +29,18 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
     @Autowired
 	UserAuthService userAuthService;
 
+    @Autowired
+	AuthenticationManager authenticationManager;
+    
+    @Autowired
+	JwtProvider jwtProvider;
+    
+    @Value("${app.system.user}")
+    private String username;
+
+    @Value("${app.system.id}")
+    private String password;
+    
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthTokenFilter.class);
 
     @Override
@@ -34,9 +49,12 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
     								FilterChain filterChain) 
     										throws ServletException, IOException {
         try {
-        	
             String jwt = getJwt(request);
-            if (jwt!=null && tokenProvider.validateJwtToken(jwt)) {
+            if(jwt == null) {
+            	Authentication authentication = authenticationManager.authenticate(
+        				new UsernamePasswordAuthenticationToken(username, password));
+        		SecurityContextHolder.getContext().setAuthentication(authentication);        		 
+            } else if (jwt!=null && tokenProvider.validateJwtToken(jwt)) {
                 String username = tokenProvider.getUserNameFromJwtToken(jwt);
 
                 UserDetails userDetails = userAuthService.loadUserByUsername(username);

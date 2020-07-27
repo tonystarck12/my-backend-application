@@ -54,6 +54,7 @@ public class UserAuthController {
 
 	private static final Logger logger = LoggerFactory.getLogger(JwtAuthEntryPoint.class);
 
+	
 	@RequestMapping(value = "/users", method = RequestMethod.GET, produces = "application/json")
 	public List<User> getAllUsers() {
 		logger.info("/users API get called");

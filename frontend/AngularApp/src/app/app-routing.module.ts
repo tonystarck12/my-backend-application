@@ -33,7 +33,7 @@ const routes: Routes = [
           ] 
     },
     {
-        path: 'auth/login',
+        path: 'login',
         component: LoginComponent
     },
     {
@@ -41,9 +41,9 @@ const routes: Routes = [
         component: RegisterComponent
     },
     {
-        path: '',
-        redirectTo: 'auth/login',
-        pathMatch: 'full'
+      path: '',
+      redirectTo: '/login',
+      pathMatch: 'full'
     }
 ];
 
