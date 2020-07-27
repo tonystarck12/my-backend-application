@@ -12,11 +12,12 @@ export class HomeComponent implements OnInit {
   info: any;
   roles: string[];
   authority: string;
+  showLogoutModal: boolean = false;
   constructor(private tokenStorage: TokenStorageService,private router: Router) { }
 
   ngOnInit() {
     if(this.tokenStorage.getToken() == null){
-      this.router.navigate(["auth/login"]);
+      this.router.navigate(["login"]);
     }
     if (this.tokenStorage.getToken()) {
       this.roles = this.tokenStorage.getAuthorities();
@@ -42,6 +43,10 @@ export class HomeComponent implements OnInit {
 
   logout(){
     this.tokenStorage.signOut();
-    this.router.navigate(["auth/login"]);
+    this.router.navigate(["login"]);
+  }
+
+  displayLogoutConfirmation() {
+   this.showLogoutModal = true;
   }
 }
