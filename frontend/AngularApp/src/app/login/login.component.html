@@ -51,7 +51,7 @@
                               <button class="btn btn-lg btn-block btn-primary mb-3"> Sign in </button>
                               <p class="text-center"><small class="text-muted text-center"> Don't have an account yet? <a href="signup">Sign up</a>. </small></p>
                               <div *ngIf="submitted && isLoginFailed" class="alert alert-danger">
-                               Please enter correct Credientials
+                               {{errorMessage}}
                               </div>
                           </form>
                       </div>
