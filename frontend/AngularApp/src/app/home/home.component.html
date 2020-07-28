@@ -16,23 +16,26 @@
   </ul>
 </nav>
 <div class="container-fluid">
-
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary" *ngIf="authority">
-      <div class="navbar-nav">
-        <div [routerLinkActive]="['nav-item-active']" class="nav-item" >
-            <a id="nav-link" class="nav-link" routerLink="dashboard">Dashboard</a>
-        </div>
-        <div [routerLinkActive]="['nav-item-active']" class="nav-item" *ngIf="authority === 'user' || authority === 'admin'">
-            <a id="nav-link"class="nav-link" routerLink="user" >User Board </a>
-        </div>
-        <div [routerLinkActive]="['nav-item-active']" class="nav-item" *ngIf="authority === 'admin'">
-            <a id="nav-link"class="nav-link" routerLink="admin" >Admin Board </a>
-        </div>
-        <div [routerLinkActive]="['nav-item-active']" class="nav-item" *ngIf="authority === 'pm' || authority === 'admin'">
-            <a id="nav-link" class="nav-link" routerLink="pm" >PM Board </a>
-        </div>
-       
-      </div>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav" *ngFor="let menuOption of navigationMenu">
+        <!-- Normal Tab -->
+        <li *ngIf="!menuOption.dropdown" [routerLinkActive]="['nav-item-active']">
+          <a id="nav-link" class="nav-link" routerLink="{{ menuOption.link }}">{{ menuOption.name }}</a>
+        </li>
+        <!-- Dropdown Tab -->
+        <li *ngIf="menuOption.dropdown" [routerLinkActive]="['nav-item-active']" class="dropdown">
+          <a id="nav-link" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ menuOption.name }}
+          </a>
+          <div class="dropdown-menu">
+            <a id="cursor" class="dropdown-item" routerLink="adduser">Add User</a>
+            <a id="cursor" class="dropdown-item" routerLink="userlist">User List</a>
+            <a id="cursor" class="dropdown-item" routerLink="changepassword" >Change Password</a>
+          </div>
+        </li>
+      </ul>
+    </div>
   </nav>
 </div>
 

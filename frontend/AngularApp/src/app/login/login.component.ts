@@ -5,6 +5,7 @@ import { TokenStorageService } from '../auth/token-storage.service';
 import { AuthLoginInfo } from '../auth/login-info';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from "ngx-spinner";
+import { CommonService } from '../services/common.service';
 
 @Component({
   selector: 'app-login',
@@ -18,9 +19,10 @@ export class LoginComponent implements OnInit {
   isLoginFailed = false;
   errorMessage = '';
   roles: string[] = [];
+  loggedOut : boolean = this.commonService.loggedOut;
   private loginInfo: AuthLoginInfo;
 
-  constructor(private spinnerService: NgxSpinnerService,private formBuilder: FormBuilder,private authService: AuthService, private tokenStorage: TokenStorageService, private router: Router) { }
+  constructor(private commonService: CommonService,private spinnerService: NgxSpinnerService,private formBuilder: FormBuilder,private authService: AuthService, private tokenStorage: TokenStorageService, private router: Router) { }
 
   
 
@@ -40,6 +42,7 @@ export class LoginComponent implements OnInit {
   get f() { return this.loginForm.controls; }
 
   onSubmit() {
+    this.loggedOut = false;
     this.spinnerService.show();
     this.submitted = true;
     console.log("On Submit Form>>",this.loginForm);
@@ -62,7 +65,6 @@ export class LoginComponent implements OnInit {
         this.isLoginFailed = false;
         this.isLoggedIn = true;
         this.roles = this.tokenStorage.getAuthorities();
-        //this.reloadPage();
         this.spinnerService.hide();
         this.router.navigate(["home"]);
       },
@@ -75,7 +77,4 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  reloadPage() {
-    window.location.reload();
-  }
 }

@@ -8,6 +8,9 @@ import { UserComponent } from './user/user.component';
 import { PmComponent } from './pm/pm.component';
 import { AdminComponent } from './admin/admin.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { AdduserComponent } from './admin/adduser/adduser.component';
+import { ChangepasswordComponent } from './admin/changepassword/changepassword.component';
+import { UserlistComponent } from './admin/userlist/userlist.component';
 
 const routes: Routes = [
     {
@@ -29,7 +32,20 @@ const routes: Routes = [
             {
                 path: 'admin',
                 component: AdminComponent // another child route component that the router renders
-              }
+
+            },
+            {
+              path: 'adduser', // child route path
+              component: AdduserComponent // child route component that the router renders
+            },
+            {
+              path: 'changepassword',
+              component: ChangepasswordComponent // another child route component that the router renders
+            },
+            {
+                path: 'userlist',
+                component: UserlistComponent // another child route component that the router renders
+            }
           ] 
     },
     {
