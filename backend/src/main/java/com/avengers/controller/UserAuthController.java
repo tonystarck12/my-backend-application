@@ -15,7 +15,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +30,7 @@ import com.avengers.message.response.ResponseMessage;
 import com.avengers.model.Role;
 import com.avengers.model.RoleName;
 import com.avengers.model.User;
-import com.avengers.security.jwt.JwtAuthEntryPoint;
+import com.avengers.model.UserPrinciple;
 import com.avengers.security.jwt.JwtProvider;
 import com.avengers.service.UserAuthService;
 
@@ -52,9 +51,8 @@ public class UserAuthController {
 	@Autowired
 	JwtProvider jwtProvider;
 
-	private static final Logger logger = LoggerFactory.getLogger(JwtAuthEntryPoint.class);
+	private static final Logger logger = LoggerFactory.getLogger(UserAuthController.class);
 
-	
 	@RequestMapping(value = "/users", method = RequestMethod.GET, produces = "application/json")
 	public List<User> getAllUsers() {
 		logger.info("/users API get called");
@@ -63,16 +61,28 @@ public class UserAuthController {
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
+
 		logger.info("/signin API get called");
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+		try {
+			Authentication authentication = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+			UserPrinciple userDetails = (UserPrinciple) authentication.getPrincipal();
 
-		SecurityContextHolder.getContext().setAuthentication(authentication);
+			userAuthService.updateLoginTimeStamp(loginRequest.getUsername());
+			
+			SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		String jwt = jwtProvider.generateJwtToken(authentication);
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			String jwt = jwtProvider.generateJwtToken(authentication);
 
-		return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
+			return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities(),userDetails.getLastLogingTime()));
+
+		} catch (Exception e) {
+			if("Bad credentials".equals(e.getMessage())) {
+				userAuthService.incrementFailedAttemptCount(loginRequest.getUsername());
+	        }
+			return new ResponseEntity<>(new ResponseMessage(e.getMessage()), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@PostMapping("/signup")

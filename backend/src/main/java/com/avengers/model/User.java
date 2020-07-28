@@ -57,6 +57,12 @@ public class User{
     	inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    private boolean isAccountLocked;
+    
+    private int failedLoginAttempt = 0;
+    
+    private String lastLogingTime;
+    
     public User() {}
 
     public User(String name, String username, String email, String password) {
@@ -113,4 +119,28 @@ public class User{
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+	public boolean isAccountLocked() {
+		return isAccountLocked;
+	}
+
+	public void setAccountLocked(boolean isAccountLocked) {
+		this.isAccountLocked = isAccountLocked;
+	}
+
+	public int getFailedLoginAttempt() {
+		return failedLoginAttempt;
+	}
+
+	public void setFailedLoginAttempt(int failedLoginAttempt) {
+		this.failedLoginAttempt = failedLoginAttempt;
+	}
+
+	public String getLastLogingTime() {
+		return lastLogingTime;
+	}
+
+	public void setLastLogingTime(String lastLogingTime) {
+		this.lastLogingTime = lastLogingTime;
+	}
 }

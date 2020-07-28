@@ -20,6 +20,12 @@ public class UserPrinciple implements UserDetails {
     private String username;
 
     private String email;
+    
+    private boolean isAccountlocked;
+    
+    private int failedLoginAttempt = 0;
+    
+    private String lastLogingTime;
 
     @JsonIgnore
     private String password;
@@ -27,14 +33,17 @@ public class UserPrinciple implements UserDetails {
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserPrinciple(Long id, String name, 
-			    		String username, String email, String password, 
+			    		String username, String email, String password, boolean isAccountlocked, int failedLoginAttempt, String lastLogingTime,
 			    		Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.name = name;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.isAccountlocked = isAccountlocked;
         this.authorities = authorities;
+        this.failedLoginAttempt = failedLoginAttempt;
+        this.lastLogingTime = lastLogingTime;
     }
 
     public static UserPrinciple build(User user) {
@@ -48,6 +57,9 @@ public class UserPrinciple implements UserDetails {
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
+                user.isAccountLocked(),
+                user.getFailedLoginAttempt(),
+                user.getLastLogingTime(),
                 authorities
         );
     }
@@ -86,7 +98,7 @@ public class UserPrinciple implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !isAccountlocked;
     }
 
     @Override
@@ -107,4 +119,20 @@ public class UserPrinciple implements UserDetails {
         UserPrinciple user = (UserPrinciple) o;
         return Objects.equals(id, user.id);
     }
+
+	public int getFailedLoginAttempt() {
+		return failedLoginAttempt;
+	}
+
+	public void setFailedLoginAttempt(int failedLoginAttempt) {
+		this.failedLoginAttempt = failedLoginAttempt;
+	}
+
+	public String getLastLogingTime() {
+		return lastLogingTime;
+	}
+
+	public void setLastLogingTime(String lastLogingTime) {
+		this.lastLogingTime = lastLogingTime;
+	}
 }

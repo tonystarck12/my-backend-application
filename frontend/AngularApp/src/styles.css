@@ -29,12 +29,16 @@
 .nav-item-active {
 	background:#4FA9DC;	
  }
+ 
 #nav-link { 
 	color:white 
 } 
 
 #logoutLink {
 	color:#007bff;
+	cursor: pointer;
+}
+#cursor {
 	cursor: pointer;
 }
 /* Home Page Nave Bar CSS Starts */
