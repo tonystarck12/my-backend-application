@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
 import { TokenStorageService } from '../auth/token-storage.service';
+import { CommonService } from '../services/common.service';
 
 @Component({
   selector: 'app-admin',
@@ -12,12 +13,11 @@ export class AdminComponent implements OnInit {
   board: string;
   errorMessage: string;
 
-  constructor(private userService: UserService,private tokenStorage: TokenStorageService,private router: Router) { }
+  constructor(private userService: UserService,private commonService: CommonService) {
+    this.commonService.isJWTTokenAvailable();
+   }
 
   ngOnInit() {
-    if(this.tokenStorage.getToken() == null){
-      this.router.navigate(["auth/login"]);
-    }
     this.userService.getAdminBoard().subscribe(
       data => {
         this.board = data;

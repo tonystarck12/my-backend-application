@@ -16,7 +16,7 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     if(this.tokenStorage.getToken() == null){
-      this.router.navigate(["auth/login"]);
+      this.router.navigate(["login"]);
     }
     this.userService.getUserBoard().subscribe(
       data => {
