@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.avengers.model.Role;
 import com.avengers.model.RoleName;
 import com.avengers.model.User;
-import com.avengers.security.jwt.JwtAuthEntryPoint;
 import com.avengers.model.UserPrinciple;
 
 @Repository
@@ -30,7 +29,7 @@ public class UserAuthRepositoryImpl implements UserAuthRepository, UserDetailsSe
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	private static final Logger logger = LoggerFactory.getLogger(JwtAuthEntryPoint.class);
+	private static final Logger logger = LoggerFactory.getLogger(UserAuthRepositoryImpl.class);
 
 	@Override
 	public Boolean existsByUsername(String username) {
@@ -112,34 +111,71 @@ public class UserAuthRepositoryImpl implements UserAuthRepository, UserDetailsSe
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		logger.info("In loadUserByUsername() method");
 
-		String sql = "select u.id, u.name, u.email, u.password, u.username, r.name as role_name from users as u "
+		String sql = "select u.id, u.name, u.email, u.password, u.username, u.status, u.failed_login_attempt, u.last_login_time, r.name as role_name from users as u "
 				+ "inner join user_roles as ur on u.id=ur.user_id inner join roles as r on ur.role_id=r.id where u.username='"
 				+ username + "'";
-		
-		List <User> result = jdbcTemplate.query(sql, new UserMapper());
+
+		List<User> result = jdbcTemplate.query(sql, new UserMapper());
 
 		if (null != result && !result.isEmpty())
 			return UserPrinciple.build(result.get(0));
 		else
 			throw new UsernameNotFoundException("User Not Found with -> username : " + username);
 	}
-	
+
 	public static class UserMapper implements RowMapper<User> {
 		@Override
-		   public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-			   User user = new User();
-			   Set<Role> roleList = new HashSet<Role>();
-			   Role role = new Role(RoleName.valueOf(rs.getString("role_name")));
-			   roleList.add(role);
-			   user.setName(rs.getString("name"));
-			   user.setUsername(rs.getString("username"));
-			   user.setEmail(rs.getString("email"));
-			   user.setPassword(rs.getString("password"));
-			   user.setRoles(roleList);
-		       return user;
-		   }
-
-	
+		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+			User user = new User();
+			Set<Role> roleList = new HashSet<Role>();
+			Role role = new Role(RoleName.valueOf(rs.getString("role_name")));
+			roleList.add(role);
+			user.setName(rs.getString("name"));
+			user.setUsername(rs.getString("username"));
+			user.setEmail(rs.getString("email"));
+			user.setPassword(rs.getString("password"));
+			if ("ACTIVE".equals(rs.getString("status"))) {
+				user.setAccountLocked(false);
+			} else {
+				user.setAccountLocked(true);
+			}
+			user.setFailedLoginAttempt(rs.getInt("failed_login_attempt"));
+			user.setLastLogingTime(rs.getString("last_login_time"));
+			user.setRoles(roleList);
+			return user;
 		}
+
+	}
+
+	public void updateLoginTimeStamp(String username) {
+		logger.info("In updateLoginTimeStamp() method");
+		java.sql.Timestamp updateTimeDate = new java.sql.Timestamp(new java.util.Date().getTime());
+
+		String sql = "update users set last_login_time = '" + updateTimeDate + "' where username='" + username + "'";
+
+		jdbcTemplate.update(sql);
+
+	}
+
+	public void incrementFailedAttemptCount(String username) {
+		logger.info("In incrementFailedAttemptCount() method");
+
+		String sql = "select failed_login_attempt from users where username='" + username + "'";
+		int count = 0;
+		List<Integer> result = jdbcTemplate.query(sql,
+				(rs, rowNum) -> new Integer(rs.getInt("failed_login_attempt")));
+		if (null != result && !result.isEmpty())
+			count = result.get(0);
+		String updateSql = "";
+		if(count == 2) {
+			updateSql = "update users set status = 'LOCKED' where username='" + username + "'";
+			jdbcTemplate.update(updateSql);
+		}
+		
+		updateSql = "update users set failed_login_attempt = " + (count+1) + " where username='" + username + "'";
+
+		jdbcTemplate.update(updateSql);
+		
+	}
 
 }

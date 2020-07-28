@@ -13,6 +13,7 @@ export class HomeComponent implements OnInit {
   info: any;
   roles: string[];
   authority: string;
+  lastLogin: string;
   showLogoutModal: boolean = false;
   userRole: any [] = [
     {
@@ -81,6 +82,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
       this.roles = this.tokenStorage.getAuthorities();
+      this.lastLogin = this.tokenStorage.getLastLogin();
       this.roles.every(role => {
         if (role === 'ROLE_ADMIN') {
           this.authority = 'admin';

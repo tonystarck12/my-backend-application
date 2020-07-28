@@ -53,4 +53,12 @@ public class UserAuthServiceImpl implements UserAuthService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		return userAuthRepository.loadUserByUsername(username);
 	}
+
+	public void updateLoginTimeStamp(String username) {
+		userAuthRepository.updateLoginTimeStamp(username);
+	}
+	
+	public void incrementFailedAttemptCount(String username) {
+		userAuthRepository.incrementFailedAttemptCount(username);
+	}
 }

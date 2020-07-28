@@ -9,6 +9,7 @@ const AUTHORITIES_KEY = 'AuthAuthorities';
 })
 export class TokenStorageService {
   private roles: Array<string> = [];
+  private lastLoginDetails: string;
   constructor() { }
 
   signOut() {
@@ -48,5 +49,13 @@ export class TokenStorageService {
     }
 
     return this.roles;
+  }
+
+  public saveLastLogin(lastLogin: string){
+    this.lastLoginDetails = lastLogin;
+  }
+
+  public getLastLogin(): string {
+    return this.lastLoginDetails;
   }
 }

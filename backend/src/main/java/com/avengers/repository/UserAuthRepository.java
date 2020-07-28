@@ -11,7 +11,7 @@ import com.avengers.model.RoleName;
 import com.avengers.model.User;
 
 public interface UserAuthRepository {
-	
+
 	Optional<User> findByUsername(String username);
 
 	Optional<Role> findByName(RoleName roleName);
@@ -25,4 +25,8 @@ public interface UserAuthRepository {
 	List<User> getAllUsers();
 
 	UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+
+	void updateLoginTimeStamp(String username);
+	
+	void incrementFailedAttemptCount(String username);
 }
