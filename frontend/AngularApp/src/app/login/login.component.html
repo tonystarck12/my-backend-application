@@ -29,7 +29,7 @@
                               <div class="form-group">
                                   <div class="row">
                                       <div class="col"><label>Password</label></div>
-                                      <div class="col-auto"><a href="#" class="form-text small text-muted"> Forgot password? </a></div>
+                                      <div class="col-auto"><a id="logoutLink" (click)="resetPassword()" class="form-text small text-muted"> Forgot password? </a></div>
                                   </div>
                                   <div class="input-group input-group-merge">
                                     <input type="password" formControlName="password" class="form-control form-control-appended" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
@@ -51,7 +51,7 @@
                               <button class="btn btn-lg btn-block btn-primary mb-3"> Sign in </button>
                               <p class="text-center"><small class="text-muted text-center"> Don't have an account yet? <a href="signup">Sign up</a>. </small></p>
                               <div *ngIf="submitted && isLoginFailed" class="alert alert-danger">
-                               Please enter correct Credientials
+                               {{errorMessage}}
                               </div>
                           </form>
                       </div>

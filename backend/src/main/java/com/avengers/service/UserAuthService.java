@@ -19,6 +19,10 @@ public interface UserAuthService {
 	Boolean existsByEmail(String email);
 
 	void save(User user);
+	
+	void updateLoginTimeStamp(String username);
+	
+	void incrementFailedAttemptCount(String username);
 
 	List<User> getAllUsers();
 
