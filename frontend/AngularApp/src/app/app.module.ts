@@ -21,6 +21,7 @@ import { ChartComponentComponent } from './chart-component/chart-component.compo
 import { AdduserComponent } from './admin/adduser/adduser.component';
 import { ChangepasswordComponent } from './admin/changepassword/changepassword.component';
 import { UserlistComponent } from './admin/userlist/userlist.component';
+import { ResetpasswordComponent } from './login/resetpassword/resetpassword.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { UserlistComponent } from './admin/userlist/userlist.component';
     ChartComponentComponent,
     AdduserComponent,
     ChangepasswordComponent,
-    UserlistComponent
+    UserlistComponent,
+    ResetpasswordComponent
   ],
   imports: [
     BrowserModule,
