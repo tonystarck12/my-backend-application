@@ -11,6 +11,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdduserComponent } from './admin/adduser/adduser.component';
 import { ChangepasswordComponent } from './admin/changepassword/changepassword.component';
 import { UserlistComponent } from './admin/userlist/userlist.component';
+import { ResetpasswordComponent } from './login/resetpassword/resetpassword.component';
 
 const routes: Routes = [
     {
@@ -50,7 +51,11 @@ const routes: Routes = [
     },
     {
         path: 'login',
-        component: LoginComponent
+        component: LoginComponent,
+    },
+    {
+      path: 'resetpassword',
+      component: ResetpasswordComponent
     },
     {
         path: 'signup',
