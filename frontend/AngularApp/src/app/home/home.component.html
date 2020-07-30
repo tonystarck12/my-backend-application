@@ -32,9 +32,7 @@
             {{ menuOption.name }}
           </a>
           <div class="dropdown-menu">
-            <a id="cursor" class="dropdown-item" routerLink="adduser">Add User</a>
-            <a id="cursor" class="dropdown-item" routerLink="userlist">User List</a>
-            <a id="cursor" class="dropdown-item" routerLink="changepassword" >Change Password</a>
+            <a  *ngFor="let subMenu of menuOption.subMenu" id="cursor" class="dropdown-item" routerLink="{{subMenu.link}}">{{subMenu.name}}</a>
           </div>
         </li>
       </ul>

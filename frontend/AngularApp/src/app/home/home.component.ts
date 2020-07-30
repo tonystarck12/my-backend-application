@@ -19,14 +19,12 @@ export class HomeComponent implements OnInit {
     {
       "link": "dashboard",
       "name" : "Dashboard",
-      "display": true,
       "dropdown" : false
     },
     {
       "link": "user",
       "name" : "User Board",
-      "display": true,
-      "dropdown" : true
+      "dropdown" : false
     }
   ]
   adminRole:any [] = [
@@ -39,14 +37,26 @@ export class HomeComponent implements OnInit {
       "link": "user",
       "name" : "User Board",
       "dropdown" : false
-    }
-    ,
+    },
     {
       "link": "admin",
       "name" : "Admin Board",
-      "dropdown" : true
-    }
-    ,
+      "dropdown" : true,
+      "subMenu" : [
+        {
+          "link": "adduser",
+          "name" : "Add User",
+        },
+        {
+          "link": "userlist",
+          "name" : "User List",
+        },
+        {
+          "link": "changepassword",
+          "name" : "Change Password",
+        }
+      ]
+    },
     {
       "link": "pm",
       "name" : "PM Board",
@@ -64,7 +74,7 @@ export class HomeComponent implements OnInit {
     {
       "link": "user",
       "name" : "User Board",
-      "dropdown" : true
+      "dropdown" : false
     }
      ,
     {
