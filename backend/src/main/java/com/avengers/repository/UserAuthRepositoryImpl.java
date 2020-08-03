@@ -19,6 +19,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.avengers.configuration.ApplicationConfiguration;
+import com.avengers.constant.ApplicationConstants;
 import com.avengers.model.Role;
 import com.avengers.model.RoleName;
 import com.avengers.model.User;
@@ -168,7 +169,7 @@ public class UserAuthRepositoryImpl implements UserAuthRepository, UserDetailsSe
 		if (null != result && !result.isEmpty())
 			count = result.get(0);
 		String updateSql = "";
-		if(count == ApplicationConfiguration.maxWrongPasswordCount) {
+		if(count == Integer.parseInt(ApplicationConfiguration.getProperty(ApplicationConstants.max_wrong_password_count))) {
 			updateSql = "update users set status = 'LOCKED' where username='" + username + "'";
 			jdbcTemplate.update(updateSql);
 		}

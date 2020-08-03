@@ -1,6 +1,11 @@
 package com.avengers.repository;
 
-public interface ApplicationConfigRepository {
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-	int getMaxWrngPasswordAttemptCount();
+import com.avengers.model.AppConfiguration;
+
+@Repository
+public interface ApplicationConfigRepository extends CrudRepository<AppConfiguration, Long> {
+
 }
