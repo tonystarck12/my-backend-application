@@ -3,6 +3,7 @@ import { TokenStorageService } from './auth/token-storage.service';
 import { Router } from '@angular/router';
 import { AuthLoginInfo } from './auth/login-info';
 import { AuthService } from './auth/auth.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -16,9 +17,12 @@ export class AppComponent implements OnInit {
   errorMessage = '';
   roles: string[] = [];
   private loginInfo: AuthLoginInfo;
-  constructor(private authService: AuthService,private tokenStorage: TokenStorageService, private router: Router) { }
+  constructor(private translate: TranslateService,private authService: AuthService,private tokenStorage: TokenStorageService, private router: Router) {
+    translate.setDefaultLang('en');
+   }
 
   ngOnInit() {
+    console.log()
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
       this.roles = this.tokenStorage.getAuthorities();

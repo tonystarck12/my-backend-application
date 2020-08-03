@@ -1,0 +1,11 @@
+{
+    "loginPage": {
+        "loginId": "Login Id",
+        "password": "Password",
+        "loginIdRequiredErrorMsg": "Login Id is required",
+        "passwordRequiredErrorMsg": "Password is required",
+        "passwordMinLengthErrorMsg": "Password must be at least 6 characters",
+        "logoutSuccessMessage":"You have been logged out Successfully."
+        
+    }
+}

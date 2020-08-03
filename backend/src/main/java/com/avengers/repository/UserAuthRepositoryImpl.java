@@ -18,6 +18,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.avengers.configuration.ApplicationConfiguration;
+import com.avengers.constant.ApplicationConstants;
 import com.avengers.model.Role;
 import com.avengers.model.RoleName;
 import com.avengers.model.User;
@@ -151,7 +153,7 @@ public class UserAuthRepositoryImpl implements UserAuthRepository, UserDetailsSe
 		logger.info("In updateLoginTimeStamp() method");
 		java.sql.Timestamp updateTimeDate = new java.sql.Timestamp(new java.util.Date().getTime());
 
-		String sql = "update users set last_login_time = '" + updateTimeDate + "' where username='" + username + "'";
+		String sql = "update users set last_login_time = '" + updateTimeDate + "', failed_login_attempt = 0 where username='" + username + "'";
 
 		jdbcTemplate.update(sql);
 
@@ -167,7 +169,7 @@ public class UserAuthRepositoryImpl implements UserAuthRepository, UserDetailsSe
 		if (null != result && !result.isEmpty())
 			count = result.get(0);
 		String updateSql = "";
-		if(count == 2) {
+		if(count == Integer.parseInt(ApplicationConfiguration.getProperty(ApplicationConstants.max_wrong_password_count))) {
 			updateSql = "update users set status = 'LOCKED' where username='" + username + "'";
 			jdbcTemplate.update(updateSql);
 		}
